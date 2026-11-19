@@ -14,11 +14,13 @@
 <sub>Source code is private (company system). Images are illustrative mock-ups with sample
 data; see [DISCLAIMER](../DISCLAIMER.md).</sub>
 
-![Stock request handover view](images/02-stock-request.png)
+![Animated walkthrough: request → reserve → dispatch → outlet receives 4 of 5 → gap traced](images/stock-request-flow.gif)
+
+<sub>▶ 20-second walkthrough of the stock request flow (mock-up, sample data)</sub>
 
 **Contents:** [Overview](#overview) · [Tech stack](#tech-stack) · [Architecture](#architecture) ·
 [Key contributions](#key-contributions) · [Engineering challenges](#engineering-challenges) ·
-[Screens](#screens) · [Deeper docs](#deeper-docs)
+[How it evolved](#how-it-evolved) · [Screens](#screens) · [Deeper docs](#deeper-docs)
 
 ---
 
@@ -220,6 +222,20 @@ human check instead of trusting the OCR. **PO entry dropped from about 4 minutes
 
 ---
 
+## How it evolved
+
+Built and shipped incrementally over 7 months: a working core loop in **~6 weeks**,
+performance fixes in **week 7**, security and consistency hardening in **month 4**, and
+faster data entry (OCR import) in **month 7**.
+
+| Apr | May | Jun | Jul | Aug | Sep | Oct | Nov |
+|---|---|---|---|---|---|---|---|
+| Foundation | Core loop | Finance + performance | All outlets adopt | Hardening | Procurement | Fast data entry | Insight |
+
+→ [Full timeline, delivery chart and what drove each change](docs/evolution.md)
+
+---
+
 ## Screens
 
 *Illustrative mock-ups with sample data. The real UI differs.*
@@ -241,5 +257,6 @@ human check instead of trusting the OCR. **PO entry dropped from about 4 minutes
 | [Architecture](docs/architecture.md) | Components, request pipeline, data model, key workflows (diagrams) |
 | [Engineering challenges](docs/engineering-challenges.md) | The five problems above in depth: approach and alternatives |
 | [Design decisions & trade-offs](docs/design-decisions.md) | Why Firestore, Cloud Run, on-device OCR, layered permissions… and what each choice cost |
+| [How it evolved](docs/evolution.md) | Month-by-month timeline, delivery chart, what drove each change |
 | [Lessons learned](docs/lessons-learned.md) | What worked, what I'd do differently, what's next |
 | [**Technical Q&A: the hard questions**](docs/technical-qa.md) | 22 senior-level questions answered: race conditions, crash recovery, idempotency, security trade-offs, what breaks at 100× scale |

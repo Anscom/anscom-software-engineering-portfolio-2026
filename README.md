@@ -20,7 +20,7 @@ problem, the architecture, what I personally built, and the engineering decision
 
 ### 01 · Multi-Outlet Inventory & Procurement System
 
-[![Inventory system: stock request handover view](project-01-inventory-system/images/02-stock-request.png)](project-01-inventory-system/)
+[![Inventory system: animated stock request walkthrough](project-01-inventory-system/images/stock-request-flow.gif)](project-01-inventory-system/)
 
 The warehouse would say *"we sent 5"* and the outlet would say *"we received 4"*, and nobody
 could prove where the missing item went. I built a system where every handover (packed,
