@@ -105,12 +105,18 @@ there wasn't one bug; there were several patterns that don't scale.
 
 | Root cause | Fix | Effect |
 |---|---|---|
-| N+1 reads: list pages fetched related records once per product | Batched `getAll()` reads | Several reads per product → one batched read per page |
+| N+1 reads: list pages fetched 4 related records per product | Batched `getAll()` reads | 25-item page: **100 → 4 reads** (−96%); 100-item page: 400 → 4 |
 | Reference data (brands, categories, suppliers…) fully re-read on every request | In-memory cache with expiry, plus a shared Redis layer, cleared on every write | Repeated full-collection reads removed from hot paths |
 | User roles looked up in the database on every request | Roles embedded in the signed JWT; short-lived cache for revocation and device checks | One fewer database read per API call |
-| Per-outlet loops issuing up to 20 queries | A single `in` query with a new composite index | ~20 queries → 1 |
+| Per-outlet loops issuing up to 20 queries | `in` queries with 8 new composite indexes | Outlet requests **20 → 2 queries**; staff requests 10 → 1 |
 | Very long tables rendered in full | Virtualised scrolling | Only visible rows are rendered |
 | Rate limiter was a no-op placeholder | Real rate limiting, with stricter limits on login routes | Abuse protection |
+
+**Why read counts rather than milliseconds.** Firestore bills per document read, and
+latency depends on network conditions, so the read count is the reliable, reproducible
+measure. Cutting a product page from 100 reads to 4 also cuts that page's database cost by
+about 96%. As a rough estimate, it also removes several hundred milliseconds of server time
+from a typical list request.
 
 **Principle.** Make one targeted fix per root cause rather than a rewrite. Caches are
 **invalidated on write**, so the expiry time is only a safety net and never the reason data

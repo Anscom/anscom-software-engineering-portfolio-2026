@@ -1,6 +1,6 @@
 # Multi-Outlet Inventory & Procurement System
 
-**Sole engineer · in production since 2026 · used daily by warehouse, outlet, purchasing and accounting staff**
+**Sole engineer · in production since 2026 · used daily by ~30 warehouse, outlet, purchasing and accounting staff**
 
 `TypeScript` `React` `Node.js` `Express` `Firestore` `Google Cloud Run` `Firebase`
 
@@ -35,6 +35,16 @@ Supplier PO → shipment → receive into batches → warehouse stock
    → outlet request → approve → reserve → dispatch (in transit) → outlet confirms receipt
    → daily usage log → stocktake → discrepancy reports → accounting export
 ```
+
+**Impact**
+
+| | Before | After |
+|---|---|---|
+| Warehouse ↔ outlet delivery disputes | Recurring, unresolvable | **None:** every gap is traced to a step and a person |
+| Time to enter a purchase order | ~4 min (manual retyping) | **~1.5 min** with screenshot import (**~60% faster**) |
+| Database reads to load a product list page (25 items) | 100 | **4** (−96%) |
+| Queries to load stock requests across outlets | up to 20 | **2** (−90%) |
+| Users | — | **~30 staff** across warehouse, outlets, purchasing and accounting |
 
 **Main features**
 
@@ -182,22 +192,23 @@ several separate causes.
 
 | Cause | Fix |
 |---|---|
-| Several database reads *per product* on list pages | One batched read per page |
+| 4 database reads *per product* on list pages (100 reads for a 25-item page) | Batched reads: **4 per page** (−96%; up to 400 → 4 at 100 items) |
 | Reference data re-read on every request | Cache that expires after a set time, cleared on every write (in-memory + Redis) |
-| Role lookup on every request | Roles embedded in the signed login token |
-| Up to 20 queries, one per outlet | Single `in` query backed by a composite index |
+| Role lookup on every request | Roles embedded in the signed login token (**−1 database read on every API call**) |
+| Up to 20 queries, one per outlet | `in` queries backed by composite indexes: **2 queries** (−90%) |
 | Thousands of table rows rendered at once | Virtualised scrolling |
 | Placeholder rate limiter | Real rate limiting |
 
 → [Deep dive](docs/engineering-challenges.md#4-performance-under-growing-data)
 
 ### 5. Turning unreliable OCR into correct money data
-**Problem:** purchasers buy from a Chinese e-commerce app and used to retype every order.
-OCR saves the typing but regularly misreads digits.
+**Problem:** purchasers buy from a Chinese e-commerce app and used to retype every order
+(about 4 minutes per PO). OCR saves the typing but regularly misreads digits.
 **Solution:** OCR runs **in the browser** (no API cost, and images never leave the device).
 A parser cross-checks every amount that can be derived (unit price × quantity − discount +
 GST = amount paid, and the sum of orders + fee = bill total) and flags mismatches for a quick
-human check instead of trusting the OCR.
+human check instead of trusting the OCR. **PO entry dropped from about 4 minutes to about
+1.5 minutes.**
 → [Deep dive](docs/engineering-challenges.md#5-validating-ocr-output)
 
 ---
@@ -224,3 +235,4 @@ human check instead of trusting the OCR.
 | [Engineering challenges](docs/engineering-challenges.md) | The five problems above in depth: approach and alternatives |
 | [Design decisions & trade-offs](docs/design-decisions.md) | Why Firestore, Cloud Run, on-device OCR, layered permissions… and what each choice cost |
 | [Lessons learned](docs/lessons-learned.md) | What worked, what I'd do differently, what's next |
+| [**Technical Q&A: the hard questions**](docs/technical-qa.md) | 22 senior-level questions answered: race conditions, crash recovery, idempotency, security trade-offs, what breaks at 100× scale |

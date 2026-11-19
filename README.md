@@ -27,6 +27,8 @@ could prove where the missing item went. I built a system where every handover (
 dispatched, received) is recorded, and every gap has to have a reason before it can be closed.
 
 - **Role:** sole engineer, from requirements to production support
+- **Impact:** used daily by ~30 staff · delivery disputes eliminated · PO entry 4 min → 1.5 min ·
+  product page database reads 100 → 4
 - **Scale:** ~180k lines of TypeScript · ~130 REST endpoints · 7 user roles · 500+ commits in 7 months
 - **Highlights:** transactional stock reservations · in-transit and partial deliveries ·
   stocktake variance control · on-device OCR purchase-order import · layered access control
