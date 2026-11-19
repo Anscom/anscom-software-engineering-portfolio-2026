@@ -1,11 +1,18 @@
 # Multi-Outlet Inventory & Procurement System
 
-**Sole engineer · in production since 2026 · used daily by ~30 warehouse, outlet, purchasing and accounting staff**
+**Sole engineer · April 2026 – present · used daily by ~30 warehouse, outlet, purchasing and accounting staff**
 
 `TypeScript` `React` `Node.js` `Express` `Firestore` `Google Cloud Run` `Firebase`
 
-> Source code is private (company system). Images are illustrative mock-ups with sample data;
-> see [DISCLAIMER](../DISCLAIMER.md).
+> **TL;DR:** I replaced spreadsheet-and-chat stock tracking for a multi-outlet retailer with
+> one transactional system. Warehouse ↔ outlet delivery disputes went to **zero**, purchase-order
+> entry dropped from **4 to 1.5 minutes**, and I designed, built and run it **solo**.
+>
+> **Engineers:** start with the [Technical Q&A](docs/technical-qa.md) (race conditions, crash
+> recovery, what breaks at 100×) and [Engineering challenges](docs/engineering-challenges.md).
+
+<sub>Source code is private (company system). Images are illustrative mock-ups with sample
+data; see [DISCLAIMER](../DISCLAIMER.md).</sub>
 
 ![Stock request handover view](images/02-stock-request.png)
 

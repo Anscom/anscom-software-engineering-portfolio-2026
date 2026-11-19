@@ -33,7 +33,10 @@ dispatched, received) is recorded, and every gap has to have a reason before it 
 - **Highlights:** transactional stock reservations · in-transit and partial deliveries ·
   stocktake variance control · on-device OCR purchase-order import · layered access control
 
-**[Read the case study →](project-01-inventory-system/)**
+**[Read the case study →](project-01-inventory-system/)** ·
+[Technical Q&A](project-01-inventory-system/docs/technical-qa.md) ·
+[Architecture](project-01-inventory-system/docs/architecture.md) ·
+[Design decisions](project-01-inventory-system/docs/design-decisions.md)
 
 ---
 
